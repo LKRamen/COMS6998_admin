@@ -30,7 +30,7 @@ export default async function Login({
           <i />
           <b>✳</b>
         </div>
-        <small>BRAINROT / CONTROL ROOM</small>
+        <small>QUIP / CONTROL ROOM</small>
       </div>
       <div className="login-panel">
         <div className="login-card">

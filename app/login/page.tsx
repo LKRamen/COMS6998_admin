@@ -1,6 +1,90 @@
-import { login,logout } from "../auth/actions";
-export default async function Login({searchParams}:{searchParams:Promise<{error?:string}>}){
- const {error}=await searchParams;
- const message=error==="access"?"This account isn’t an authorized superadmin. Try your approved Google account.":error?"Sign-in could not be completed. Please try again.":null;
- return <main className="login"><div className="login-art"><div className="wordmark">b<span>r</span>.</div><div><span className="eyebrow">THE HUMAN SIDE OF AI HUMOR</span><h1>Good memes.<br/>Great oversight.</h1><p>The little control room behind the chaos.</p></div><div className="art-orbits" aria-hidden="true"><i/><i/><i/><b>✳</b></div><small>BRAINROT / CONTROL ROOM</small></div><div className="login-panel"><div className="login-card"><span className="pill">PRIVATE WORKSPACE</span><h2>Welcome to Control.</h2><p>Manage the media. Meet the community.<br/>See what gets a reaction.</p>{message&&<p className="error-box" role="alert">{message}</p>}<form action={login}><button className="google-button"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="#4285f4" d="M22 12.2c0-.7-.1-1.5-.2-2.2H12v4.2h5.6c-.2 1.4-1 2.5-2.1 3.3v2.7h3.4c2-1.9 3.1-4.6 3.1-8z"/><path fill="#34a853" d="M12 22c2.8 0 5.2-.9 6.9-2.5l-3.4-2.7c-.9.6-2.1 1-3.5 1-2.7 0-5-1.8-5.8-4.2H2.7v2.8A10.4 10.4 0 0 0 12 22z"/><path fill="#fbbc05" d="M6.2 13.6A6.2 6.2 0 0 1 6.2 10V7.2H2.7a10 10 0 0 0 0 9.2z"/><path fill="#ea4335" d="M12 6.2c1.6 0 3 .5 4.1 1.6l3.1-3.1A10 10 0 0 0 2.7 7.2L6.2 10c.8-2.3 3.1-3.8 5.8-3.8z"/></svg>Continue with Google<span>↗</span></button></form><div className="login-note"><span>◇</span><p>Access is limited to approved superadmins.<br/>Signing in does not grant admin permissions.</p></div>{error==="access"&&<form action={logout}><button className="text-button">Sign out of this account</button></form>}</div><small>COMS6998 · ADMINISTRATION</small></div></main>;
+import { login, logout } from "../auth/actions";
+export default async function Login({
+  searchParams,
+}: {
+  searchParams: Promise<{ error?: string }>;
+}) {
+  const { error } = await searchParams;
+  const message =
+    error === "access"
+      ? "This account isn’t an authorized superadmin. Try your approved Google account."
+      : error
+        ? "Sign-in could not be completed. Please try again."
+        : null;
+  return (
+    <main className="login">
+      <div className="login-art">
+        <div className="wordmark">q.</div>
+        <div>
+          <span className="eyebrow">THE HUMAN SIDE OF AI HUMOR</span>
+          <h1>
+            Good memes.
+            <br />
+            Great oversight.
+          </h1>
+          <p>The little control room behind the chaos.</p>
+        </div>
+        <div className="art-orbits" aria-hidden="true">
+          <i />
+          <i />
+          <i />
+          <b>✳</b>
+        </div>
+        <small>BRAINROT / CONTROL ROOM</small>
+      </div>
+      <div className="login-panel">
+        <div className="login-card">
+          <span className="pill">PRIVATE WORKSPACE</span>
+          <h2>Welcome to Control.</h2>
+          <p>
+            Manage the media. Meet the community.
+            <br />
+            See what gets a reaction.
+          </p>
+          {message && (
+            <p className="error-box" role="alert">
+              {message}
+            </p>
+          )}
+          <form action={login}>
+            <button className="google-button">
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path
+                  fill="#4285f4"
+                  d="M22 12.2c0-.7-.1-1.5-.2-2.2H12v4.2h5.6c-.2 1.4-1 2.5-2.1 3.3v2.7h3.4c2-1.9 3.1-4.6 3.1-8z"
+                />
+                <path
+                  fill="#34a853"
+                  d="M12 22c2.8 0 5.2-.9 6.9-2.5l-3.4-2.7c-.9.6-2.1 1-3.5 1-2.7 0-5-1.8-5.8-4.2H2.7v2.8A10.4 10.4 0 0 0 12 22z"
+                />
+                <path
+                  fill="#fbbc05"
+                  d="M6.2 13.6A6.2 6.2 0 0 1 6.2 10V7.2H2.7a10 10 0 0 0 0 9.2z"
+                />
+                <path
+                  fill="#ea4335"
+                  d="M12 6.2c1.6 0 3 .5 4.1 1.6l3.1-3.1A10 10 0 0 0 2.7 7.2L6.2 10c.8-2.3 3.1-3.8 5.8-3.8z"
+                />
+              </svg>
+              Continue with Google<span>↗</span>
+            </button>
+          </form>
+          <div className="login-note">
+            <span>◇</span>
+            <p>
+              Access is limited to approved superadmins.
+              <br />
+              Signing in does not grant admin permissions.
+            </p>
+          </div>
+          {error === "access" && (
+            <form action={logout}>
+              <button className="text-button">Sign out of this account</button>
+            </form>
+          )}
+        </div>
+        <small>COMS6998 · ADMINISTRATION</small>
+      </div>
+    </main>
+  );
 }

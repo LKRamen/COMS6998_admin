@@ -1,5 +1,87 @@
 import Link from "next/link";
-import {read,date,pageNumber,type Collection,type Vote} from "../../../lib/data";
-import {PageHeading,Search,Pagination,Empty,Badge} from "../../components/ui";
-export const metadata={title:"Vote ledger"};
-export default async function Ratings({searchParams}:{searchParams:Promise<{q?:string;page?:string}>}){const s=await searchParams,q=s.q??"",d=await read<Collection<Vote>>("votes",q,pageNumber(s.page));return <><PageHeading eyebrow="EVERY REACTION HAS A RECEIPT" title="The vote ledger." description="A transparent, read-only record of the community’s upvotes and downvotes."><Badge>{d.total} reactions</Badge></PageHeading><Search query={q} placeholder="Search voter, caption, ID, upvote, or downvote"/><section className="panel table-panel">{d.rows.length?<div className="table-scroll"><table><thead><tr><th>Reaction</th><th>Voter</th><th>Media / Caption</th><th>Last updated</th></tr></thead><tbody>{d.rows.map(v=><tr key={`${v.user_id}-${v.caption_id}`}><td><Badge tone={v.value===1?"green":"red"}>{v.value===1?"↑ Upvote":"↓ Downvote"}</Badge></td><td><b>@{v.username??"unclaimed"}</b><code className="record-id">{v.user_id.slice(0,8)}</code></td><td className="caption-cell"><Link href={`/media/${v.moment_id}`}>{v.visible_caption||"View media"} ↗</Link><code className="record-id">Caption {v.caption_id.slice(0,8)}</code></td><td>{date(v.updated_at)}</td></tr>)}</tbody></table></div>:<Empty title="No reactions found"/>}<Pagination page={d.page} total={d.total} query={q}/></section><p className="collection-note">One current vote per user and caption. Brainrot uses upvotes (+1) and downvotes (−1); there is no separate star-rating system.</p></>;}
+import {
+  read,
+  date,
+  pageNumber,
+  type Collection,
+  type Vote,
+} from "../../../lib/data";
+import {
+  PageHeading,
+  Search,
+  Pagination,
+  Empty,
+  Badge,
+} from "../../components/ui";
+export const metadata = { title: "Vote ledger" };
+export default async function Ratings({
+  searchParams,
+}: {
+  searchParams: Promise<{ q?: string; page?: string }>;
+}) {
+  const s = await searchParams,
+    q = s.q ?? "",
+    d = await read<Collection<Vote>>("votes", q, pageNumber(s.page));
+  return (
+    <>
+      <PageHeading
+        eyebrow="EVERY REACTION HAS A RECEIPT"
+        title="The vote ledger."
+        description="A transparent, read-only record of the community’s upvotes and downvotes."
+      >
+        <Badge>{d.total} reactions</Badge>
+      </PageHeading>
+      <Search
+        query={q}
+        placeholder="Search voter, caption, ID, upvote, or downvote"
+      />
+      <section className="panel table-panel">
+        {d.rows.length ? (
+          <div className="table-scroll">
+            <table>
+              <thead>
+                <tr>
+                  <th>Reaction</th>
+                  <th>Voter</th>
+                  <th>Media / Caption</th>
+                  <th>Last updated</th>
+                </tr>
+              </thead>
+              <tbody>
+                {d.rows.map((v) => (
+                  <tr key={`${v.user_id}-${v.caption_id}`}>
+                    <td>
+                      <Badge tone={v.value === 1 ? "green" : "red"}>
+                        {v.value === 1 ? "↑ Upvote" : "↓ Downvote"}
+                      </Badge>
+                    </td>
+                    <td>
+                      <b>@{v.username ?? "unclaimed"}</b>
+                      <code className="record-id">{v.user_id.slice(0, 8)}</code>
+                    </td>
+                    <td className="caption-cell">
+                      <Link href={`/media/${v.moment_id}`}>
+                        {v.visible_caption || "View media"} ↗
+                      </Link>
+                      <code className="record-id">
+                        Caption {v.caption_id.slice(0, 8)}
+                      </code>
+                    </td>
+                    <td>{date(v.updated_at)}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        ) : (
+          <Empty title="No reactions found" />
+        )}
+        <Pagination page={d.page} total={d.total} query={q} />
+      </section>
+      <p className="collection-note">
+        One current vote per user and caption. Quip uses upvotes (+1) and
+        downvotes (−1); there is no separate star-rating system.
+      </p>
+    </>
+  );
+}

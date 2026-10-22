@@ -1,6 +1,6 @@
-# Brainrot Control — COMS6998 Week 6
+# Quip Control — COMS6998 Week 6
 
-Independent admin app for the existing Brainrot Supabase database. This repository is deployed to its own Vercel project, `coms6998-admin`; it does not change the COMS6998 app repository.
+Independent admin app for the existing Quip Supabase database. This repository is deployed to its own Vercel project, `coms6998-admin`; it does not change the COMS6998 app repository.
 
 ## Features
 

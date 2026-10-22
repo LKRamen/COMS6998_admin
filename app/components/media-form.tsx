@@ -1,4 +1,5 @@
 "use client";
+/* eslint-disable @next/next/no-img-element -- Private images require the viewer's session cookies. */
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
@@ -35,7 +36,7 @@ export default function MediaForm({ media }: { media?: Media }) {
   }
   return (
     <div className="editor-grid">
-      <form className="panel editor" action={submit}>
+      <form className="panel editor" onSubmit={(event) => { event.preventDefault(); void submit(new FormData(event.currentTarget)); }}>
         <input
           type="hidden"
           name="action"
@@ -246,7 +247,7 @@ export default function MediaForm({ media }: { media?: Media }) {
               Its captions and votes will also be removed. Type <b>DELETE</b> to
               confirm.
             </p>
-            <form action={submit}>
+            <form onSubmit={(event) => { event.preventDefault(); void submit(new FormData(event.currentTarget)); }}>
               <input type="hidden" name="action" value="delete" />
               <input type="hidden" name="id" value={media.id} />
               <input type="hidden" name="updated_at" value={media.updated_at} />

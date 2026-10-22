@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element -- Private images require the viewer's session cookies. */
 import Link from "next/link";
 import {
   read,

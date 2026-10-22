@@ -16,7 +16,7 @@ export function geminiConfig() {
   const model = process.env.GEMINI_MODEL?.trim();
   if (!key || !model || !/^[a-zA-Z0-9._-]+$/.test(model))
     throw new GenerationError(
-      "Caption generation is not configured yet. Your saved drafts are safe.",
+      "Caption generation is not configured yet. Please try again later.",
     );
   return { key, model };
 }
@@ -83,7 +83,7 @@ export async function generateCaptions(input: {
     }
   } catch {
     throw new GenerationError(
-      "The AI request timed out or could not connect. Your draft is saved; try again.",
+      "The AI request timed out or could not connect. Your inputs are still here; try again.",
     );
   }
   if (response.status === 429)
@@ -92,7 +92,7 @@ export async function generateCaptions(input: {
     );
   if ([500, 502, 503, 504].includes(response.status))
     throw new GenerationError(
-      "The AI provider is temporarily unavailable. Your draft is saved; try again shortly.",
+      "The AI provider is temporarily unavailable. Your inputs are still here; try again shortly.",
     );
   if (!response.ok)
     throw new GenerationError(
@@ -103,7 +103,7 @@ export async function generateCaptions(input: {
     data = await response.json();
   } catch {
     throw new GenerationError(
-      "The AI did not return a valid response. Your draft is saved; try again.",
+      "The AI did not return a valid response. Your inputs are still here; try again.",
     );
   }
   const candidate = data.candidates?.[0];

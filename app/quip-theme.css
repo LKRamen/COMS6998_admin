@@ -1,0 +1,62 @@
+/* Quip Control uses the consumer app's charcoal, blue and mint palette. */
+:root {
+  color-scheme: dark;
+  --bg: #101012;
+  --surface: #19191d;
+  --raised: #222227;
+  --ink: #f6f3ef;
+  --muted: #a19da8;
+  --line: #303035;
+  --purple: #86b9ff;
+  --soft: #1c3049;
+  --lime: #9fe3ba;
+}
+.sidebar { background: #141416; border-right: 1px solid var(--line); color: var(--muted); }
+.topbar, .panel, .stat, .media-card, .search, .confirm-dialog,
+.button, .google-button, .pagination a { background: var(--surface); color: var(--ink); }
+.login-panel { background: var(--bg); }
+.login-art, .spotlight, .create-note { background: var(--soft); color: var(--ink); }
+.brand-mark, .primary { background: var(--purple); color: var(--bg); border-color: var(--purple); box-shadow: none; }
+.primary:hover { background: #a6ceff; border-color: #a6ceff; }
+nav a:hover, .media-image, .mini-meter, th, .provenance,
+.upload-field, .search button, .stat > div span { background: var(--raised); }
+nav .nav-active, .account-icon, .avatar, .badge.purple,
+.pill, .upload-field input::file-selector-button { background: var(--soft); color: var(--purple); border-color: #36557b; }
+nav i, .purple, .bar-pair i, .mini-meter span, .audit-dot { background: var(--purple); }
+.lime, .bar-pair i + i, .live-dot, .secure i { background: var(--lime); }
+.bar-chart { background: repeating-linear-gradient(to top, transparent 0, transparent 39px, var(--line) 40px); }
+.editor input, .editor textarea, .editor select, .confirm-dialog input,
+.upload-field input { background: var(--bg); color: var(--ink); border-color: var(--line); }
+.upload-field { border-color: #52677e; }
+.editor input::placeholder, .editor textarea::placeholder, .search input::placeholder { color: var(--muted); opacity: 1; }
+h1, h2, h3, td, td b, .wordmark, .login-art h1, .login-card h2,
+.media-content h2, .audit-list b, .style-row b, .spotlight h2,
+.collection-meta b, .provenance b, .chart-bottom b { color: var(--ink); }
+.eyebrow, .side-label, .brand small, .topbar, .topbar b, .secure,
+.overview-note, .stat > div, .stat small, .subtle, .chart-legend,
+.chart-day small, .chart-bottom, .panel-description, .leader-row .rank,
+.leader-row small, .style-row small, .style-row > b, .audit-list small,
+.audit-list b, .search > span, .search a, th, .member small, .table-bio,
+.record-id, .pagination, .collection-note, .collection-meta span,
+.media-content p, .media-footer, .media-footer > span > span,
+.empty p, .empty > span, .editor label, .editor small, .confirm-dialog label,
+.provenance p, .provenance small, .candidate small, .create-note p,
+.danger-zone p, .confirm-dialog p, .login-art .eyebrow, .login-art p,
+.login-art > small, .login-card > p, .login-note p, .login-panel > small,
+.google-button > span, .mobile-signout button, footer, .block { color: var(--muted); }
+.overview-note a, .text-link, .media-style, .media-footer b,
+.empty a, .text-button, .caption-cell a:hover, .search button,
+.spotlight .eyebrow, .spotlight a, .working, .login-note > span { color: var(--purple); }
+.badge { background: var(--raised); color: var(--muted); }
+.badge.green, .success-box { background: #193326; color: var(--lime); border-color: #315c42; }
+.badge.red, .danger, .error-box { background: #381e23; color: #ffb6bd; border-color: #69333e; }
+.danger-zone h3 { color: #ffb6bd; }
+.leader-row, td, .candidate, .login-note, .spotlight a, footer { border-color: var(--line); }
+.media-card:hover { border-color: #52677e; box-shadow: 0 8px 28px #0003; }
+.spotlight-number span { background: var(--raised); border-color: #36557b; color: var(--purple); }
+.spotlight-ring, .art-orbits i { border-color: #36557b; }
+.art-orbits b, .wordmark span, .brand-mark span, .note-star { color: var(--purple); }
+.spinner { border-color: #36557b; border-top-color: var(--purple); }
+a:focus-visible, button:focus-visible, input:focus-visible,
+textarea:focus-visible, select:focus-visible { outline-color: var(--purple); }
+@media (max-width: 850px) { .sidebar { border-bottom: 1px solid var(--line); } }

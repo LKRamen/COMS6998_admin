@@ -44,13 +44,15 @@ export function Pagination({
   page,
   total,
   query = "",
+  filters = {},
 }: {
   page: number;
   total: number;
   query?: string;
+  filters?: Record<string, string>;
 }) {
   const url = (p: number) =>
-    `?${new URLSearchParams({ page: String(p), ...(query ? { q: query } : {}) })}`;
+    `?${new URLSearchParams({ ...filters, page: String(p), ...(query ? { q: query } : {}) })}`;
   return (
     <div className="pagination">
       <span>

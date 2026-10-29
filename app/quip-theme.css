@@ -152,3 +152,12 @@ textarea:focus-visible, select:focus-visible { outline-color: var(--purple); }
   .pipeline-workbench .panel { padding: 20px; }
   .pipeline-publication-review { padding: 16px; }
 }
+
+.media-filters { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px; padding: 24px; margin-bottom: 20px; }
+.media-filters label { display: flex; flex-direction: column; gap: 8px; min-width: 0; font-size: 13px; }
+.media-filters input, .media-filters select { width: 100%; min-width: 0; padding: 12px; border: 1px solid var(--line, #36363b); border-radius: 8px; background: var(--bg, #101012); color: inherit; font: inherit; }
+.media-filter-search { grid-column: span 2; }
+.media-filter-actions { display: flex; align-items: center; gap: 20px; grid-column: span 2; }
+.media-filters :is(input, select, button, a):focus-visible { outline: 2px solid #8bbcff; outline-offset: 3px; }
+@media (max-width: 800px) { .media-filters { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 480px) { .media-filters { grid-template-columns: 1fr; padding: 18px; } .media-filter-search, .media-filter-actions { grid-column: auto; } }

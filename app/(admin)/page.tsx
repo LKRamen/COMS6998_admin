@@ -120,7 +120,7 @@ export default async function OverviewPage() {
           <span className="eyebrow">WAITING FOR A VERDICT</span>
           <div className="spotlight-number">
             {d.unrated}
-            <Link href="/media" className="spotlight-arrow" aria-label="Open the media library to review memes without a reaction">
+            <Link href="/media?status=published&reactions=unrated" className="spotlight-arrow" aria-label="Open the media library to review memes without a reaction">
               <span aria-hidden="true">↗</span>
             </Link>
           </div>

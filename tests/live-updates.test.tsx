@@ -6,6 +6,8 @@ const mocks = vi.hoisted(() => ({ path: '/', refresh: vi.fn(), remove: vi.fn(), 
 const router = { refresh: mocks.refresh };
 vi.mock('next/navigation', () => ({ usePathname: () => mocks.path, useRouter: () => router }));
 vi.mock('@supabase/ssr', () => ({ createBrowserClient: () => ({
+  auth: { getSession: async () => ({data: {session: {access_token:'test-token'}},error:null}) },
+  realtime: { setAuth: async () => {} },
   channel: () => { const channel = {
     on: (_: unknown, __: unknown, fn: typeof mocks.receive) => { mocks.receive = fn; return channel; },
     subscribe: (fn: typeof mocks.subscribe) => { mocks.subscribe = fn; return channel; },
@@ -40,6 +42,7 @@ it('refreshes generation status and cleans up its channel', async () => {
 });
 it('checks for missed events after reconnecting', async () => {
   render(<LiveUpdates initialRevision="0" />);
+  await act(async () => {});
   await act(async () => { mocks.subscribe('SUBSCRIBED'); });
   await act(async () => { vi.advanceTimersByTime(800); });
   expect(mocks.refresh).toHaveBeenCalledTimes(1);

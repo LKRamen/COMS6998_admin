@@ -47,13 +47,25 @@ export default function LiveUpdates({ initialRevision }: { initialRevision: stri
         if (!disposed) setStatus("Live updates unavailable. Reconnecting…");
       } finally { checking = false; }
     };
-    const channel = client.channel("quip-admin-live")
-      .on("postgres_changes", { event: "UPDATE", schema: "public", table: "admin_live_signal" }, payload => receive(payload.new.revision))
-      .subscribe(state => {
+    const channel = client.channel(`quip-admin-live-${crypto.randomUUID()}`)
+      .on("postgres_changes", { event: "UPDATE", schema: "public", table: "admin_live_signal" }, payload => receive(payload.new.revision));
+    // Join only after cookie-session initialization; an early join can use the anon key.
+    void (async () => {
+      try {
+        const { data, error } = await client.auth.getSession();
         if (disposed) return;
-        setStatus(state === "SUBSCRIBED" ? "Live updates connected" : "Reconnecting to live updates…");
-        if (state === "SUBSCRIBED") void check();
-      });
+        if (error || !data.session) {
+          setStatus("Live updates unavailable. Sign in again to reconnect."); return;
+        }
+        await client.realtime.setAuth(data.session.access_token);
+        if (disposed) return;
+        channel.subscribe(state => {
+          if (disposed) return;
+          setStatus(state === "SUBSCRIBED" ? "Live updates connected" : "Reconnecting to live updates…");
+          if (state === "SUBSCRIBED") void check();
+        });
+      } catch { if (!disposed) setStatus("Live updates unavailable. Reconnecting…"); }
+    })();
     const resume = () => { update(); void check(); };
     document.addEventListener("visibilitychange", resume);
     window.addEventListener("online", resume);

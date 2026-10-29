@@ -9,25 +9,26 @@ export default async function Detail({
   searchParams,
 }: {
   params: Promise<{ id: string }>;
-  searchParams: Promise<{ saved?: string }>;
+  searchParams: Promise<{ saved?: string; created?: string }>;
 }) {
   const { id } = await params;
   if (!isUuid(id)) notFound();
   const d = await read<Collection<Media>>("media", "", 0, id),
     media = d.rows[0];
   if (!media) notFound();
-  const { saved } = await searchParams;
+  const { saved, created } = await searchParams;
   return (
     <>
       <PageHeading
         eyebrow={`MEDIA / ${id.slice(0, 8).toUpperCase()}`}
-        title="Behind the meme."
+        title={media.status === "draft" ? "Find your punchline." : "Behind the meme."}
         description={`Created by @${media.username ?? "creator"} · ${media.upvotes} upvotes · ${media.downvotes} downvotes`}
       >
         <Badge tone={media.status === "published" ? "green" : "neutral"}>
           {media.status}
         </Badge>
       </PageHeading>
+      {created && <p className="success-box" role="status">Three captions are ready. Your draft is saved privately — choose your favorite below.</p>}
       {saved && (
         <p className="success-box" role="status">
           Media saved successfully.

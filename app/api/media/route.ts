@@ -154,6 +154,7 @@ export async function POST(request: Request) {
         ...inputs,
         status,
         caption,
+        ...(form.has("selected_caption_id") ? { selected_caption_id: form.get("selected_caption_id") } : {}),
         updated_at: form.get("updated_at"),
       };
     }

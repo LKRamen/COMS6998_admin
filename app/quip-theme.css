@@ -165,3 +165,9 @@ textarea:focus-visible, select:focus-visible { outline-color: var(--purple); }
 .live-updates { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 18px; margin-bottom: 22px; color: var(--muted, #a9a9b3); font-size: 12px; }
 .live-updates button { background: #1d324b; color: #b9d7ff; border: 1px solid #42648a; border-radius: 8px; padding: 8px 12px; font: inherit; cursor: pointer; }
 .live-updates button:focus-visible { outline: 2px solid #8bbcff; outline-offset: 3px; }
+.photo-drop { border-color: var(--line); background: var(--bg); }
+.style-picker button { border-color: var(--line); }
+.style-picker button[aria-pressed="true"] { background: var(--soft); color: var(--purple); border-color: var(--purple); }
+.editor .caption-picker label { color: var(--ink); border-color: var(--line); }
+.editor .caption-picker label.selected { border-color: var(--purple); box-shadow: inset 0 0 0 1px var(--purple); }
+.caption-picker input { accent-color: var(--purple); }

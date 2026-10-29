@@ -9,6 +9,8 @@ export default function MediaForm({ media }: { media?: Media }) {
   const router = useRouter(),
     [busy, setBusy] = useState(false),
     [error, setError] = useState(""),
+    [caption, setCaption] = useState(media?.caption ?? ""),
+    [selectedCaption, setSelectedCaption] = useState(media?.selected_caption_id ?? ""),
     [deleting, setDeleting] = useState(false),
     [confirmation, setConfirmation] = useState("");
   async function submit(form: FormData) {
@@ -36,7 +38,7 @@ export default function MediaForm({ media }: { media?: Media }) {
   }
   return (
     <div className="editor-grid">
-      <form className="panel editor" onSubmit={(event) => { event.preventDefault(); void submit(new FormData(event.currentTarget)); }}>
+      <form className="panel editor" onSubmit={(event) => { event.preventDefault(); const form = new FormData(event.currentTarget); const button = (event.nativeEvent as SubmitEvent).submitter as HTMLButtonElement | null; if (button?.value) form.set("status", button.value); void submit(form); }}>
         <input
           type="hidden"
           name="action"
@@ -46,16 +48,27 @@ export default function MediaForm({ media }: { media?: Media }) {
           <>
             <input type="hidden" name="id" value={media.id} />
             <input type="hidden" name="updated_at" value={media.updated_at} />
+            {media.status === "draft" && <input type="hidden" name="selected_caption_id" value={selectedCaption} />}
           </>
         )}
         <div className="panel-title">
           <h2>
-            {media ? "Edit the details" : "Make something worth reacting to."}
+            {media?.status === "draft" ? "Choose your punchline." : "Edit the details"}
           </h2>
           <span className="subtle">
             {media ? "Changes are audited" : "Powered by Gemini"}
           </span>
         </div>
+        {media?.status === "draft" && <>
+          <p className="creation-note">Your draft is private. Pick a caption, make it your own, then save or publish it to Quip.</p>
+          <fieldset className="caption-picker" disabled={busy}>
+            <legend>Choose a caption</legend>
+            {media.candidates?.map((candidate, i) => <label key={candidate.id} className={selectedCaption === candidate.id ? "selected" : ""}>
+              <input type="radio" name="caption-choice" value={candidate.id} checked={selectedCaption === candidate.id} onChange={() => { setSelectedCaption(candidate.id); setCaption(candidate.text); }} />
+              <span><small>OPTION {i + 1}{selectedCaption === candidate.id ? " · SELECTED" : ""}</small>{candidate.text}</span>
+            </label>)}
+          </fieldset>
+        </>}
         {!media && (
           <label className="upload-field">
             <span>01 / Start with a photo</span>
@@ -75,7 +88,8 @@ export default function MediaForm({ media }: { media?: Media }) {
             <textarea
               name="caption"
               maxLength={240}
-              defaultValue={media.caption}
+              value={caption}
+              onChange={e => setCaption(e.target.value)}
               required
               disabled={busy}
               rows={3}
@@ -101,7 +115,7 @@ export default function MediaForm({ media }: { media?: Media }) {
             {media ? "Humor style" : "03 / Pick the energy"}
             <select
               name="style"
-              defaultValue={media?.style ?? "Quip"}
+              defaultValue={media?.style ?? "Brainrot"}
               disabled={busy}
             >
               {captionStyles.map((style) => (
@@ -109,7 +123,7 @@ export default function MediaForm({ media }: { media?: Media }) {
               ))}
             </select>
           </label>
-          <label>
+          {media?.status !== "draft" && <label>
             Visibility
             <select
               name="status"
@@ -124,8 +138,10 @@ export default function MediaForm({ media }: { media?: Media }) {
                 Published · visible on Quip
               </option>
             </select>
-          </label>
+          </label>}
+          {media?.status === "draft" && <input type="hidden" name="status" value="draft" />}
         </div>
+        {media?.status === "draft" && <p className="creation-note">Context and humor style are saved as details here. Changing them does not regenerate these captions.</p>}
         {error && (
           <p className="error-box" role="alert">
             {error}
@@ -143,26 +159,29 @@ export default function MediaForm({ media }: { media?: Media }) {
           <Link href="/media" className="text-link">
             Cancel
           </Link>
-          <button className="button primary" disabled={busy}>
+          <button className={media?.status === "draft" ? "button" : "button primary"} disabled={busy}>
             {busy
               ? "Working…"
               : media
-                ? "Save changes"
+                ? media.status === "draft" ? "Save draft" : "Save changes"
                 : "Generate & create media"}
             <span>↗</span>
           </button>
+          {media?.status === "draft" && <button className="button primary" name="status" value="published" disabled={busy || !selectedCaption || !caption.trim()}>Publish to Quip ↗</button>}
         </div>
       </form>
       <aside className="editor-aside">
         {media ? (
           <>
             <div className="panel preview">
-              <span className="eyebrow">CURRENT RENDER</span>
+              <span className="eyebrow">{media.status === "draft" ? "LIVE PREVIEW" : "CURRENT RENDER"}</span>
+              {media.status === "draft" ? <div className="meme-preview"><p>{caption}</p><img src={`/api/image/${media.id}?original=1`} alt="Original photo for your meme" /></div> :
               <img
                 key={media.updated_at}
                 src={`/api/image/${media.id}?v=${encodeURIComponent(media.updated_at)}`}
                 alt={media.caption || "Original uploaded photo"}
-              />
+              />}
+              {media.status === "draft" && <p className="subtle">Preview updates as you type. Saving renders the final image.</p>}
               <a
                 href={`/api/image/${media.id}?original=1`}
                 target="_blank"

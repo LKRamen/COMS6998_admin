@@ -18,7 +18,7 @@ export default async function OverviewPage() {
       </PageHeading>
       <div className="overview-note">
         <span className="live-dot" /> Live database snapshot <span>·</span>{" "}
-        Refreshed on every visit{" "}
+        Updates automatically{" "}
         <Link href="/media">Explore the library ↗</Link>
       </div>
       <section className="stats" aria-label="Community statistics">

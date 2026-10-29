@@ -18,16 +18,21 @@ try{
  for(const f of (await readdir('tests/fixtures')).filter(x=>x.endsWith('.sql')&&x!=='base.sql').sort()) await db.exec(await readFile('tests/fixtures/'+f,'utf8'));
  await db.exec(await readFile('supabase/admin.sql','utf8'));
  await db.exec(await readFile('supabase/media-library.sql','utf8'));
+ await db.exec(await readFile('supabase/admin-realtime.sql','utf8'));
  await db.exec(`update public.profiles set is_superadmin=true where id='${admin}';insert into auth.sessions values('${sid}','${admin}');`);
  await session(null);await assert.rejects(db.query('select public.admin_read()'),/superadmin/);
  await session(member);await assert.rejects(db.query('select public.admin_access()'),/superadmin/);
+ await assert.rejects(db.query('select * from public.admin_live_signal'),/superadmin/);
  await assert.rejects(db.query('update public.profiles set is_superadmin=true where id=$1',[member]),/trusted database/);
  await session(admin,'google','password');await assert.rejects(db.query('select public.admin_read()'),/superadmin/);
  await session(admin,'email','oauth');await assert.rejects(db.query('select public.admin_read()'),/superadmin/);
  await session(admin);
  assert.equal((await db.query('select public.admin_access() a')).rows[0].a,true);
+ const initialSignal=(await db.query('select revision from public.admin_live_signal')).rows[0].revision;
+ await assert.rejects(db.query('update public.admin_live_signal set revision=100'),/permission denied/);
  const payload={context:'Test context',style:'Funny',status:'published',photo_path:admin+'/admin-test.jpg',rendered_path:admin+'/render-test.jpg',captions:['First generated caption','Second caption','Third caption'],system_prompt:'Test provenance',user_prompt:'{}',model:'test',settings:{}};
  await rpc('create',payload);
+ assert.ok(Number((await db.query('select revision from public.admin_live_signal')).rows[0].revision)>Number(initialSignal));
  const all=(await db.query("select public.admin_read('media','',0,$1) d",[mid])).rows[0].d;
  assert.equal(all.total,1);assert.equal(all.rows[0].caption,'First generated caption');
  const before=all.rows[0];
@@ -63,5 +68,6 @@ try{
  assert.equal((await db.query("select public.admin_read('media','',0,$1) d",[mid])).rows[0].d.total,0);
  await db.exec('reset role');assert.equal((await db.query('select count(*)::int n from public.captions where moment_id=$1',[mid])).rows[0].n,0);
  await db.exec(`delete from auth.sessions where id='${sid}'`);await session(admin);await assert.rejects(db.query('select public.admin_access()'),/superadmin/);
+ await assert.rejects(db.query('select * from public.admin_live_signal'),/superadmin/);
  console.log('PASS: guest/member/password/wrong-provider/revoked-session denial, self-promotion blocked, admin create/read/update/delete, stale write rejection, original provenance retained, audit and cascade deletion.');
 }catch(error){console.error(error.message);process.exitCode=1;}finally{await db.close();}

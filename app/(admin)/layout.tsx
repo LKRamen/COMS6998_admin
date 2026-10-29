@@ -1,13 +1,15 @@
 import Link from "next/link";
 import { requireAdmin } from "../../lib/auth";
 import Nav from "../components/nav";
+import LiveUpdates from "../components/live-updates";
 import { logout } from "../auth/actions";
 export default async function AdminLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  const { user } = await requireAdmin();
+  const { user, client } = await requireAdmin();
+  const { data: signal } = await client.from('admin_live_signal').select('revision').eq('id', true).single();
   return (
     <div className="shell">
       <aside className="sidebar">
@@ -55,7 +57,7 @@ export default async function AdminLayout({
             <button>Sign out</button>
           </form>
         </div>
-        <main className="main-content">{children}</main>
+        <main className="main-content"><LiveUpdates initialRevision={String(signal?.revision ?? 0)} />{children}</main>
         <footer>
           Quip Control <span>Real data. Human judgment.</span>
         </footer>

@@ -53,7 +53,7 @@ export default function CatalogForm({
       const result = await response.json();
       if (!response.ok)
         throw new Error(result.error ?? "The change could not be saved.");
-      setSuccess(action === "delete" ? "Record deleted." : "Changes saved.");
+      setSuccess(action === "delete" ? "Record deleted." : spec.savedMessage ?? "Changes saved.");
       if (!record) form.reset();
       router.refresh();
     } catch (e) {
@@ -68,6 +68,12 @@ export default function CatalogForm({
   }
   return (
     <form className="editor catalog-editor" onSubmit={submit}>
+      {kind === "prompt_chain_mix" && (
+        <div className="pipeline-impact">
+          <h3>What this save changes</h3>
+          <p>Only this chain’s saved mix settings. It does not edit prompts, switch models or publish a new pipeline.</p>
+        </div>
+      )}
       <fieldset disabled={busy}>
         {spec.fields.map((f) => (
           <label key={f.key} htmlFor={`${uid}-${f.key}`}>
@@ -75,6 +81,7 @@ export default function CatalogForm({
             {f.type === "textarea" ? (
               <textarea
                 id={`${uid}-${f.key}`}
+                aria-describedby={f.hint ? `${uid}-${f.key}-hint` : undefined}
                 name={f.key}
                 rows={5}
                 required={!f.optional}
@@ -84,6 +91,7 @@ export default function CatalogForm({
             ) : f.type === "checkbox" ? (
               <input
                 id={`${uid}-${f.key}`}
+                aria-describedby={f.hint ? `${uid}-${f.key}-hint` : undefined}
                 name={f.key}
                 type="checkbox"
                 defaultChecked={record ? Boolean(record[f.key]) : true}
@@ -91,6 +99,7 @@ export default function CatalogForm({
             ) : (
               <input
                 id={`${uid}-${f.key}`}
+                aria-describedby={f.hint ? `${uid}-${f.key}-hint` : undefined}
                 name={f.key}
                 type={f.type ?? "text"}
                 required={!f.optional}
@@ -101,7 +110,7 @@ export default function CatalogForm({
                 defaultValue={String(record?.[f.key] ?? "")}
               />
             )}
-            {f.hint && <small>{f.hint}</small>}
+            {f.hint && <small id={`${uid}-${f.key}-hint`}>{f.hint}</small>}
           </label>
         ))}
         <button
@@ -109,7 +118,7 @@ export default function CatalogForm({
           type="submit"
           value={record ? "update" : "create"}
         >
-          {busy ? "Saving…" : record ? "Save changes" : "Create record"}
+          {busy ? "Saving…" : spec.saveAction ?? (record ? "Save changes" : "Create record")}
         </button>
         {record && spec.mode === "crud" && (
           <details className="catalog-delete">

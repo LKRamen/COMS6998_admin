@@ -11,6 +11,7 @@ import {
   Badge,
 } from "../../../components/ui";
 import CatalogForm from "../../../components/catalog-form";
+import PipelineGuide from "../../../components/pipeline-guide";
 type Row = Record<string, unknown> & { id: string; version?: number };
 function label(key: string) {
   return key.replaceAll("_", " ").replace(/^./, (s) => s.toUpperCase());
@@ -71,6 +72,7 @@ export default async function CatalogPage({
       >
         <Badge>{d.total} records</Badge>
       </PageHeading>
+      <PipelineGuide kind={kind} />
       {kind === "llm_models" && (
         <p className="collection-note">
           <Link className="text-link" href="/catalog/llm_providers">
@@ -80,7 +82,7 @@ export default async function CatalogPage({
       )}
       {spec.mode === "crud" && (
         <details className="panel catalog-create">
-          <summary>Create {spec.title.toLowerCase()} record</summary>
+          <summary>{kind === "ai_generation_examples" ? "Add reference example" : `Create ${spec.title.toLowerCase()} record`}</summary>
           <CatalogForm kind={kind} />
         </details>
       )}
@@ -100,7 +102,7 @@ export default async function CatalogPage({
               <thead>
                 <tr>
                   {spec.columns.map((k) => (
-                    <th key={k}>{label(k)}</th>
+                    <th key={k}>{kind === "prompt_chain_mix" && k === "enabled" ? "Included in saved mix" : kind === "prompt_chain_mix" && k === "weight" ? "Saved weight" : label(k)}</th>
                   ))}
                   <th>Details</th>
                 </tr>
@@ -116,7 +118,7 @@ export default async function CatalogPage({
                     <td>
                       <details className="record-details">
                         <summary>
-                          View{spec.mode !== "read" ? " / edit" : ""}
+                          {spec.detailAction ?? (spec.mode !== "read" ? "View / edit" : "View details")}
                         </summary>
                         <div className="record-body">
                           <dl>
@@ -132,7 +134,7 @@ export default async function CatalogPage({
                               className="text-link"
                               href={`/catalog/prompt_chain_steps?q=${row.id}`}
                             >
-                              View ordered steps →
+                              Read this chain’s step prompts →
                             </Link>
                           )}
                           {spec.mode !== "read" && (

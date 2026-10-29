@@ -77,3 +77,16 @@ h1, h2, h3, td, td b, .wordmark, .login-art h1, .login-card h2,
 a:focus-visible, button:focus-visible, input:focus-visible,
 textarea:focus-visible, select:focus-visible { outline-color: var(--purple); }
 @media (max-width: 850px) { .sidebar { border-bottom: 1px solid var(--line); } }
+.pipeline-guide { margin-bottom: 24px; }
+.pipeline-guide > p { color: var(--muted); line-height: 1.6; }
+.pipeline-guide nav { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 10px; margin: 18px 0; }
+.pipeline-guide nav a { padding: 14px; border: 1px solid var(--line); border-radius: 10px; }
+.pipeline-guide nav a[aria-current="page"] { background: var(--soft); border-color: var(--purple); }
+.pipeline-guide nav a:hover { border-color: var(--purple); }
+.pipeline-guide nav a:focus-visible { outline: 2px solid var(--purple); outline-offset: 3px; }
+.pipeline-guide nav strong, .pipeline-guide nav span { display: block; }
+.pipeline-guide nav span { font-size: 12px; line-height: 1.5; margin-top: 6px; color: var(--muted); }
+.pipeline-impact { padding: 14px 16px; background: var(--bg); border-left: 3px solid var(--purple); border-radius: 4px; line-height: 1.6; }
+.pipeline-impact h3 { margin: 0 0 6px; font-size: 14px; }
+.pipeline-impact p { margin: 0; }
+.catalog-editor label small { font-weight: normal; line-height: 1.6; }

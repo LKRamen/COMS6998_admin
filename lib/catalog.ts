@@ -12,12 +12,16 @@ export type Catalog = {
   mode: "read" | "edit" | "crud";
   columns: string[];
   fields: Field[];
+  detailAction?: string;
+  saveAction?: string;
+  savedMessage?: string;
 };
 export const catalogs: Record<string, Catalog> = {
   prompt_chains: {
     title: "Prompt chains",
     description:
-      "Inspect the registered caption pipelines and their prompt versions.",
+      "A chain is a caption pipeline: a named set of instructions sent to an AI model. Choose a chain to inspect its version and ordered steps.",
+    detailAction: "Inspect chain",
     mode: "read",
     columns: ["name", "prompt_version", "description"],
     fields: [],
@@ -25,7 +29,8 @@ export const catalogs: Record<string, Catalog> = {
   prompt_chain_steps: {
     title: "Prompt chain steps",
     description:
-      "Ordered instructions, system prompts and user inputs for each chain.",
+      "Each step is one stage of a chain. Read the system prompt (the model’s rules) and user prompt (the task and input) in execution order. These saved templates are read-only here.",
+    detailAction: "Read step prompts",
     mode: "read",
     columns: ["name", "position", "chain_id"],
     fields: [],
@@ -33,12 +38,17 @@ export const catalogs: Record<string, Catalog> = {
   prompt_chain_mix: {
     title: "Prompt chain mix",
     description:
-      "Edit chain weights and availability. This configuration is stored for administration; Quip currently uses its source-defined, user-selected style pipeline.",
+      "Save a chain’s weight and inclusion in the mix. These settings are not connected to live caption generation yet.",
+    detailAction: "Edit mix settings",
+    saveAction: "Save mix settings",
+    savedMessage: "Mix settings saved. Live caption generation is unchanged.",
     mode: "edit",
     columns: ["chain_id", "weight", "enabled"],
     fields: [
-      { key: "weight", label: "Weight (0–100)", type: "number", max: 100 },
-      { key: "enabled", label: "Enabled", type: "checkbox" },
+      { key: "weight", label: "Saved weight (0–100)", type: "number", max: 100,
+        hint: "A configuration value for this chain, not a live traffic percentage. Changing it does not change how often Quip runs this chain." },
+      { key: "enabled", label: "Include in saved mix", type: "checkbox",
+        hint: "Records whether this chain is included in the saved mix. Turning it off does not disable live caption generation." },
     ],
   },
   terms: {
@@ -54,7 +64,8 @@ export const catalogs: Record<string, Catalog> = {
   generation_requests: {
     title: "Generation requests",
     description:
-      "Inspect request status, failures, exact prompts and generation settings.",
+      "Trace a caption-generation attempt: its status, errors, prompts and model settings. Use this history to understand what actually ran.",
+    detailAction: "Inspect generation request",
     mode: "read",
     columns: ["state", "model", "style", "created_at"],
     fields: [],
@@ -63,6 +74,7 @@ export const catalogs: Record<string, Catalog> = {
     title: "LLM responses",
     description:
       "Saved caption outputs with the original prompts, model and generation provenance. Raw provider payloads were not retained by the original pipeline.",
+    detailAction: "Read prompts & captions",
     mode: "read",
     columns: ["model", "provider", "style", "created_at"],
     fields: [],
@@ -70,7 +82,10 @@ export const catalogs: Record<string, Catalog> = {
   ai_generation_examples: {
     title: "AI generation examples",
     description:
-      "Curate input and output examples with notes for future prompt evaluation.",
+      "Save sample inputs and ideal outputs as a reference for evaluating prompts. Saving an example does not train a model or run a generation.",
+    detailAction: "Review / edit example",
+    saveAction: "Save example",
+    savedMessage: "Example saved for reference. No generation was run.",
     mode: "crud",
     columns: ["input", "output", "notes"],
     fields: [

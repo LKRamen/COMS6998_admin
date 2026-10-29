@@ -1,8 +1,10 @@
-# Quip Control — COMS6998 Week 6
+# Quip Control — COMS6998 Week 7
 
 Independent admin app for the existing Quip Supabase database. This repository is deployed to its own Vercel project, `coms6998-admin`; it does not change the COMS6998 app repository.
 
 ## Features
+
+- Week 7 observability and configuration collections: prompt chains/steps/mix, generation requests and saved LLM responses; CRUD terms, examples, models, providers, signup domains and email whitelist. See [the Week 7 rubric and verification](docs/week-7-rubric.md) for routes and configuration semantics. The additive `supabase/observability.sql` migration has been applied; do not rerun it.
 
 - Dashboard with real totals, 14-day media/vote activity, approval rates, unrated publications, style performance, top media, and admin audit activity.
 - Searchable, paginated, read-only user/profile directory and upvote/downvote ledger.

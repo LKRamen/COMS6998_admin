@@ -1,11 +1,17 @@
 "use client";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { catalogs } from "../../lib/catalog";
 const links = [
   ["/", "Overview", "◫"],
   ["/media", "Media library", "▧"],
   ["/users", "Community", "♙"],
   ["/ratings", "Vote ledger", "↕"],
+  ...Object.entries(catalogs).map(([key, spec]) => [
+    `/catalog/${key}`,
+    spec.title,
+    "≡",
+  ]),
 ];
 export default function Nav() {
   const path = usePathname();

@@ -1,4 +1,21 @@
 /* Quip Control uses the consumer app's charcoal, blue and mint palette. */
+.sidebar nav { overflow-y: auto; min-height: 0; }
+.catalog-create { padding: 20px; margin-bottom: 20px; }
+.catalog-create summary, .record-details summary, .catalog-delete summary { cursor: pointer; color: var(--purple); padding: 8px 0; }
+.catalog-editor { margin-top: 20px; }
+.catalog-editor fieldset { border: 0; padding: 0; display: grid; gap: 18px; min-width: 0; }
+.catalog-editor label { display: grid; gap: 8px; }
+.catalog-editor input[type=checkbox] { width: 22px; height: 22px; }
+.catalog-editor .button { justify-self: start; }
+.catalog-cell { max-width: 280px; max-height: 110px; overflow: auto; overflow-wrap: anywhere; white-space: pre-wrap; }
+.record-body { min-width: 280px; max-width: 620px; padding: 12px 0; }
+.record-body dl { margin: 0; display: grid; gap: 16px; }
+.record-body dt { color: var(--muted); font-size: 12px; margin-bottom: 6px; }
+.record-body dd { margin: 0; white-space: pre-wrap; overflow-wrap: anywhere; max-height: 360px; overflow: auto; }
+.record-json { white-space: pre-wrap; overflow-wrap: anywhere; margin: 0; font-size: 12px; }
+.catalog-delete { margin-top: 18px; border-top: 1px solid var(--line); padding-top: 12px; }
+.catalog-delete p { margin: 12px 0; }
+.catalog-delete button { margin-top: 12px; }
 :root {
   color-scheme: dark;
   --bg: #101012;

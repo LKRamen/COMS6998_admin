@@ -12,7 +12,7 @@
     "start": "next start",
     "lint": "eslint .",
     "test": "vitest run",
-    "test:database": "node tests/database.mjs && node tests/observability.mjs"
+    "test:database": "node tests/database.mjs && node tests/observability.mjs && node tests/pipelines.mjs"
   },
   "dependencies": {
     "@phosphor-icons/react": "2.1.10",

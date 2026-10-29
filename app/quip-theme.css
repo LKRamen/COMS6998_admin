@@ -1,4 +1,9 @@
 /* Quip Control uses the consumer app's charcoal, blue and mint palette. */
+.stat-link { display: block; }
+.stat-link:hover { border-color: var(--purple); }
+.stat-link:focus-visible, .spotlight-arrow:focus-visible { outline: 2px solid var(--purple); outline-offset: 4px; }
+.spotlight .spotlight-arrow { border: 0; padding: 0; margin: 0; border-radius: 50%; flex: 0 0 auto; }
+.spotlight-arrow:hover span { background: var(--soft); border-color: var(--purple); }
 .sidebar nav { overflow-y: auto; min-height: 0; }
 .catalog-create { padding: 20px; margin-bottom: 20px; }
 .catalog-create summary, .record-details summary, .catalog-delete summary { cursor: pointer; color: var(--purple); padding: 8px 0; }
@@ -90,3 +95,60 @@ textarea:focus-visible, select:focus-visible { outline-color: var(--purple); }
 .pipeline-impact h3 { margin: 0 0 6px; font-size: 14px; }
 .pipeline-impact p { margin: 0; }
 .catalog-editor label small { font-weight: normal; line-height: 1.6; }
+.pipeline-workbench { display: grid; gap: 24px; min-width: 0; }
+.pipeline-milestones { list-style: none; padding: 0; margin: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
+.pipeline-milestones li { border-top: 2px solid var(--purple); padding: 14px 0; }
+.pipeline-milestones strong, .pipeline-milestones span { display: block; }
+.pipeline-milestones span { color: var(--muted); line-height: 1.6; font-size: 12px; margin-top: 6px; }
+.pipeline-status, .pipeline-toolbar, .pipeline-step-actions { display: flex; align-items: center; flex-wrap: wrap; gap: 10px; }
+.pipeline-workbench .panel { min-width: 0; }
+.pipeline-workbench h2 { margin: 0 0 10px; }
+.pipeline-workbench h3 { margin: 0; }
+.pipeline-section-intro, .pipeline-toolbar > span, .pipeline-save-row p { color: var(--muted); line-height: 1.65; }
+.pipeline-workbench .pipeline-section-intro { margin: 0 0 20px; }
+.pipeline-workbench fieldset { padding: 0; border: 0; margin: 0; min-width: 0; }
+.pipeline-draft-form > fieldset { display: grid; gap: 24px; }
+.pipeline-workbench .editor label { display: flex; flex-direction: column; gap: 8px; margin: 20px 0; color: var(--ink); font-size: 13px; }
+.pipeline-workbench .editor input, .pipeline-workbench .editor textarea, .pipeline-workbench .editor select { width: 100%; min-width: 0; font: inherit; line-height: 1.6; }
+.pipeline-workbench .editor small { font-size: 12px; }
+.pipeline-workbench .button { white-space: normal; line-height: 1.5; text-align: center; }
+.pipeline-workbench button:disabled { opacity: .45; cursor: not-allowed; }
+.pipeline-fields-row { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px; }
+.pipeline-optional { color: var(--muted); font-weight: normal; }
+.pipeline-template-help { margin: 18px 0; padding: 14px 16px; background: var(--bg); border-radius: 10px; line-height: 1.7; }
+.pipeline-template-help summary, .pipeline-step-result summary { cursor: pointer; color: var(--purple); }
+.pipeline-template-help p { margin: 12px 0 0; color: var(--muted); }
+.pipeline-template-help code { color: var(--ink); overflow-wrap: anywhere; }
+.pipeline-step-list { list-style: none; padding: 0; margin: 0; display: grid; gap: 18px; }
+.pipeline-step-card { min-width: 0; padding: 22px; border: 1px solid var(--line); border-radius: 12px; }
+.pipeline-step-top { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+.pipeline-step-top h3 { font-size: 15px; }
+.pipeline-step-top h3 span { display: block; font-size: 12px; color: var(--muted); margin-top: 5px; font-weight: normal; }
+.pipeline-step-actions .button { padding: 8px 12px; }
+.pipeline-step-list + .pipeline-toolbar { margin-top: 18px; }
+.pipeline-save-row { display: flex; flex-wrap: wrap; gap: 16px; align-items: center; border-top: 1px solid var(--line); margin-top: 24px; padding-top: 22px; }
+.pipeline-save-row p { flex: 1 1 240px; font-size: 12px; margin: 0; }
+.pipeline-test-results { border-top: 1px solid var(--line); margin-top: 28px; padding-top: 24px; }
+.pipeline-test-photo { width: 100%; max-width: 600px; height: auto; max-height: 320px; object-fit: contain; background: var(--bg); border-radius: 10px; }
+.pipeline-test-results h3 { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+.pipeline-caption-results { padding-left: 24px; line-height: 1.7; }
+.pipeline-caption-results li { padding: 12px; border-bottom: 1px solid var(--line); }
+.pipeline-step-result { padding: 16px 0; border-top: 1px solid var(--line); line-height: 1.6; }
+.pipeline-step-result h4 { margin: 18px 0 8px; }
+.pipeline-step-result pre { padding: 14px; border-radius: 8px; background: var(--bg); white-space: pre-wrap; overflow-wrap: anywhere; max-height: 360px; overflow: auto; font-size: 12px; }
+.pipeline-publication-review { padding: 22px; border: 1px solid var(--purple); border-radius: 12px; margin-top: 20px; line-height: 1.7; }
+.pipeline-unpublish { border-top: 1px solid var(--line); padding-top: 22px; margin-top: 24px; line-height: 1.7; }
+.pipeline-list-intro { margin-bottom: 24px; }
+.pipeline-card-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr)); gap: 20px; }
+.pipeline-list-card { min-width: 0; display: flex; flex-direction: column; align-items: flex-start; gap: 16px; }
+.pipeline-list-card h2, .pipeline-list-card p { margin: 0; overflow-wrap: anywhere; }
+.pipeline-list-card p { color: var(--muted); line-height: 1.7; }
+.pipeline-list-card .text-link { margin-top: auto; }
+.pipeline-list-meta { font-size: 12px; }
+@media (max-width: 650px) {
+  .pipeline-milestones, .pipeline-fields-row { grid-template-columns: 1fr; gap: 8px; }
+  .pipeline-milestones li { padding: 10px 0; }
+  .pipeline-step-card { padding: 16px; }
+  .pipeline-workbench .panel { padding: 20px; }
+  .pipeline-publication-review { padding: 16px; }
+}

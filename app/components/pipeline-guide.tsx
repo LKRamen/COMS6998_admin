@@ -14,6 +14,7 @@ export default function PipelineGuide({ kind }: { kind: string }) {
     <section className="panel pipeline-guide" aria-labelledby="pipeline-guide-title">
       <h2 id="pipeline-guide-title">Find your way around the pipeline</h2>
       <p>Inspect the instructions, manage saved configuration, then review actual generation history.</p>
+      <p><Link className="text-link" href="/pipelines">Create, test and publish a pipeline in Pipeline studio →</Link></p>
       <nav aria-label="Prompt pipeline sections">
         {destinations.map(([key, title, description]) => (
           <Link key={key} href={`/catalog/${key}`} aria-current={key === kind ? "page" : undefined}>
@@ -22,7 +23,7 @@ export default function PipelineGuide({ kind }: { kind: string }) {
           </Link>
         ))}
       </nav>
-      <p className="pipeline-impact"><strong>Live generation:</strong> Quip currently uses prompts defined in the app and the user’s selected style. Saving mix settings or examples here does not publish changes to that pipeline.</p>
+      <p className="pipeline-impact"><strong>What goes live:</strong> Pipeline studio publishes tested revisions for individual caption styles. This source catalog, saved mix settings and examples do not publish changes. Styles without a published pipeline use Quip’s built-in prompts.</p>
     </section>
   );
 }

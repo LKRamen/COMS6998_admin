@@ -26,7 +26,8 @@ export async function sessionClient() {
     },
   });
 }
-// Used only for private Storage after requireAdmin; database reads/writes use the caller's JWT.
+// Used after adminSession for private Storage and server-certified pipeline test results.
+// Ordinary database edits continue to use the caller's JWT and guarded RPCs.
 export function storageClient() {
   const { url } = config(),
     key = process.env.SUPABASE_SERVICE_ROLE_KEY;

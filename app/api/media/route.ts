@@ -12,6 +12,8 @@ import {
 import { normalizePhoto } from "../../../lib/caption-photo";
 import { renderMeme } from "../../../lib/meme-render";
 import type { Collection, Media } from "../../../lib/data";
+import { getPublishedPipeline } from "../../../lib/published-pipeline";
+import { runPipeline } from "../../../lib/pipeline-runtime";
 export const maxDuration = 120;
 const bucket = "caption-photos";
 export async function POST(request: Request) {
@@ -90,12 +92,15 @@ export async function POST(request: Request) {
       if (!(file instanceof File))
         return NextResponse.json({ error: "Choose a photo." }, { status: 400 });
       bytes = await normalizePhoto(file);
-      const prompts = buildPrompts(inputs, []),
-        captions = await generateCaptions({
+      const prompts = buildPrompts(inputs, []);
+      const pipeline = await getPublishedPipeline(storageClient(), inputs.style);
+      const pipelineResult = pipeline ? await runPipeline({ steps: pipeline.steps, image: bytes, ...inputs }) : null;
+      const captions = pipelineResult?.captions ?? await generateCaptions({
           image: bytes,
           systemPrompt: prompts.system,
           userPrompt: prompts.user,
         });
+      const model = pipelineResult?.steps.at(-1)?.model ?? geminiConfig().model;
       caption = captions[0];
       const photoPath = `${user.id}/${id}/admin-source-${randomUUID()}.jpg`;
       const upload = await storage.upload(photoPath, bytes, {
@@ -109,10 +114,10 @@ export async function POST(request: Request) {
         status,
         captions,
         photo_path: photoPath,
-        system_prompt: prompts.system,
+        system_prompt: pipeline ? `Published pipeline ${pipeline.id}. Exact prompts and outputs are in settings.pipelineTrace.` : prompts.system,
         user_prompt: prompts.user,
-        model: geminiConfig().model,
-        settings: generationSettings(geminiConfig().model),
+        model,
+        settings: { ...generationSettings(model), ...(pipelineResult ? { pipeline, pipelineInput: inputs, pipelineTrace: pipelineResult.steps } : {}) },
       };
     } else {
       const { data, error } = await client.rpc("admin_read", {

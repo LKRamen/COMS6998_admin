@@ -23,18 +23,20 @@ export default async function OverviewPage() {
       </div>
       <section className="stats" aria-label="Community statistics">
         {[
-          ["Community", d.profiles, "Google-connected profiles", "♙"],
+          ["Community", d.profiles, "Google-connected profiles", "♙", "/users"],
           [
             "Media library",
             d.media,
             `${d.published} published · ${d.drafts} drafts`,
             "▧",
+            "/media",
           ],
           [
             "Total reactions",
             d.votes,
             `${d.upvotes} up · ${d.downvotes} down`,
             "↕",
+            "/ratings",
           ],
           [
             "Approval rate",
@@ -42,17 +44,22 @@ export default async function OverviewPage() {
             d.votes
               ? "Share of all votes that are upvotes"
               : "Waiting for the first vote",
-            "↗",
+            "thumbs-up",
+            "/ratings",
           ],
-        ].map(([label, value, note, icon]) => (
-          <article className="stat" key={String(label)}>
+        ].map(([label, value, note, icon, href]) => (
+          <Link className="stat stat-link" key={String(label)} href={String(href)}>
             <div>
               {label}
-              <span aria-hidden="true">{icon}</span>
+              <span aria-hidden="true">{icon === "thumbs-up" ? (
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" focusable="false">
+                  <path d="M7 10v11H3V10h4Zm0 0 5-7a2 2 0 0 1 2 2v4h5a2 2 0 0 1 2 2.4l-1.4 7A3 3 0 0 1 16.7 21H7" />
+                </svg>
+              ) : icon}</span>
             </div>
             <strong>{value}</strong>
             <small>{note}</small>
-          </article>
+          </Link>
         ))}
       </section>
       <div className="dashboard-grid">
@@ -113,7 +120,9 @@ export default async function OverviewPage() {
           <span className="eyebrow">WAITING FOR A VERDICT</span>
           <div className="spotlight-number">
             {d.unrated}
-            <span>↗</span>
+            <Link href="/media" className="spotlight-arrow" aria-label="Open the media library to review memes without a reaction">
+              <span aria-hidden="true">↗</span>
+            </Link>
           </div>
           <h2>
             Memes without

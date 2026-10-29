@@ -7,6 +7,7 @@ const links = [
   ["/media", "Media library", "▧"],
   ["/users", "Community", "♙"],
   ["/ratings", "Vote ledger", "↕"],
+  ["/pipelines", "Pipeline studio", "◇"],
   ...Object.entries(catalogs).map(([key, spec]) => [
     `/catalog/${key}`,
     spec.title,

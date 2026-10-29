@@ -20,7 +20,7 @@ export const catalogs: Record<string, Catalog> = {
   prompt_chains: {
     title: "Prompt chains",
     description:
-      "A chain is a caption pipeline: a named set of instructions sent to an AI model. Choose a chain to inspect its version and ordered steps.",
+      "Inspect the original source-defined caption chains and their versions. To create and publish new pipelines, open Pipeline studio.",
     detailAction: "Inspect chain",
     mode: "read",
     columns: ["name", "prompt_version", "description"],
@@ -29,7 +29,7 @@ export const catalogs: Record<string, Catalog> = {
   prompt_chain_steps: {
     title: "Prompt chain steps",
     description:
-      "Each step is one stage of a chain. Read the system prompt (the model’s rules) and user prompt (the task and input) in execution order. These saved templates are read-only here.",
+      "Read the original source chain’s system prompts (the model’s rules) and user prompts (the task and input) in execution order. Edit new pipeline drafts in Pipeline studio.",
     detailAction: "Read step prompts",
     mode: "read",
     columns: ["name", "position", "chain_id"],

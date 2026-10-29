@@ -30,4 +30,3 @@ it("saves the selected candidate and publishes only on the explicit publish butt
  body=fetcher.mock.calls[1][1].body as FormData;
  expect(body.get("status")).toBe("published"); expect(body.get("caption")).toBe("Second caption");
 });
-

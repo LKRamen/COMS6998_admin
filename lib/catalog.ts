@@ -103,7 +103,7 @@ export const catalogs: Record<string, Catalog> = {
   llm_models: {
     title: "LLM models",
     description:
-      "Maintain the model catalog. Runtime model selection remains controlled by the app’s deployment configuration.",
+      "Manage the model catalog. Enabled Gemini models are available when editing pipeline steps; the deployment default remains available.",
     mode: "crud",
     columns: ["name", "model_id", "provider_id", "enabled"],
     fields: [

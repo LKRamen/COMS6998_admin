@@ -48,33 +48,3 @@ it("keeps edits after a failed save and sends the record version", async () => {
     data: { term: "New term" },
   });
 });
-it("sends an explicit deletion operation and confirmation", async () => {
-  const fetcher = vi
-    .fn()
-    .mockResolvedValue({ ok: true, json: async () => ({ ok: true }) });
-  vi.stubGlobal("fetch", fetcher);
-  render(
-    <CatalogForm
-      kind="terms"
-      record={{
-        id: "test-id",
-        version: 2,
-        term: "Old",
-        definition: "Definition",
-      }}
-    />,
-  );
-  fireEvent.click(screen.getByText("Delete this record"));
-  fireEvent.change(screen.getByLabelText("Confirmation"), {
-    target: { value: "DELETE" },
-  });
-  fireEvent.click(screen.getByRole("button", { name: "Delete record" }));
-  await waitFor(() => expect(fetcher).toHaveBeenCalled());
-  expect(JSON.parse(fetcher.mock.calls[0][1].body)).toEqual({
-    action: "delete",
-    data: {},
-    id: "test-id",
-    version: 2,
-    confirm: "DELETE",
-  });
-});

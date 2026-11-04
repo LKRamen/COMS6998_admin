@@ -1,3 +1,4 @@
+import PipelineGuide from "../../../components/pipeline-guide";
 import { notFound } from "next/navigation";
 import { requireAdmin } from "../../../../lib/auth";
 import { isUuid } from "../../../../lib/caption-input";
@@ -22,6 +23,7 @@ export default async function PipelinePage({ params }: { params: Promise<{ id: s
   }
   return <>
     <PageHeading eyebrow="PIPELINE STUDIO" title={draft?.name ?? "Create pipeline"} description="Build instructions you can inspect, test and publish with confidence." />
+    <PipelineGuide kind="pipelines" />
     <PipelineEditor key={id} initialDraft={draft} models={models} />
   </>;
 }

@@ -48,7 +48,7 @@ export async function POST(
       );
     if (body.action === "delete" && body.confirm !== "DELETE")
       return NextResponse.json(
-        { error: "Type DELETE to confirm." },
+        { error: "Confirm deletion before continuing." },
         { status: 400 },
       );
     const { error } = await client.rpc("admin_catalog_write", {

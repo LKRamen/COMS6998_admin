@@ -2,6 +2,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { requireAdmin } from "../../../../lib/auth";
 import { getCatalog } from "../../../../lib/catalog";
+import { isPipelineCatalog } from "../../../../lib/pipeline-navigation";
 import { pageNumber, type Collection } from "../../../../lib/data";
 import {
   PageHeading,
@@ -12,35 +13,11 @@ import {
 } from "../../../components/ui";
 import CatalogForm from "../../../components/catalog-form";
 import PipelineGuide from "../../../components/pipeline-guide";
+import CatalogRecordActions, { CatalogValue } from "../../../components/catalog-record-actions";
+import "../../../catalog-refinement.css";
 type Row = Record<string, unknown> & { id: string; version?: number };
 function label(key: string) {
   return key.replaceAll("_", " ").replace(/^./, (s) => s.toUpperCase());
-}
-function value(key: string, v: unknown) {
-  if (v === null || v === undefined) return <span className="subtle">—</span>;
-  if (typeof v === "boolean")
-    return (
-      <Badge tone={v ? "green" : "neutral"}>{v ? "Enabled" : "Disabled"}</Badge>
-    );
-  if (typeof v === "object")
-    return <pre className="record-json">{JSON.stringify(v, null, 2)}</pre>;
-  const targets: Record<string, string> = {
-    chain_id: "/catalog/prompt_chains?q=",
-    provider_id: "/catalog/llm_providers?q=",
-    run_id: "/catalog/llm_responses?q=",
-    generation_run_id: "/catalog/llm_responses?q=",
-    moment_id: "/media/",
-  };
-  if (targets[key])
-    return (
-      <Link
-        className="text-link"
-        href={targets[key] + encodeURIComponent(String(v))}
-      >
-        {String(v)}
-      </Link>
-    );
-  return String(v);
 }
 export default async function CatalogPage({
   params,
@@ -66,7 +43,7 @@ export default async function CatalogPage({
   return (
     <>
       <PageHeading
-        eyebrow="OBSERVABILITY & CONFIGURATION"
+        eyebrow={isPipelineCatalog(kind) ? "PIPELINE STUDIO" : "ACCESS CONFIGURATION"}
         title={spec.title}
         description={spec.description}
       >
@@ -102,7 +79,7 @@ export default async function CatalogPage({
               <thead>
                 <tr>
                   {spec.columns.map((k) => (
-                    <th key={k}>{kind === "prompt_chain_mix" && k === "enabled" ? "Included in saved mix" : kind === "prompt_chain_mix" && k === "weight" ? "Saved weight" : label(k)}</th>
+                    <th key={k}>{kind === "prompt_chain_mix" && k === "enabled" ? "Included in saved mix" : kind === "prompt_chain_mix" && k === "weight" ? "Saved weight" : kind === "ai_generation_examples" && k === "output" ? "Expected output" : label(k)}</th>
                   ))}
                   <th>Details</th>
                 </tr>
@@ -112,40 +89,11 @@ export default async function CatalogPage({
                   <tr key={row.id}>
                     {spec.columns.map((k) => (
                       <td key={k}>
-                        <div className="catalog-cell">{value(k, row[k])}</div>
+                        <div className="catalog-cell"><CatalogValue name={k} value={row[k]} /></div>
                       </td>
                     ))}
                     <td>
-                      <details className="record-details">
-                        <summary>
-                          {spec.detailAction ?? (spec.mode !== "read" ? "View / edit" : "View details")}
-                        </summary>
-                        <div className="record-body">
-                          <dl>
-                            {Object.entries(row).map(([k, v]) => (
-                              <div key={k}>
-                                <dt>{label(k)}</dt>
-                                <dd>{value(k, v)}</dd>
-                              </div>
-                            ))}
-                          </dl>
-                          {kind === "prompt_chains" && (
-                            <Link
-                              className="text-link"
-                              href={`/catalog/prompt_chain_steps?q=${row.id}`}
-                            >
-                              Read this chain’s step prompts →
-                            </Link>
-                          )}
-                          {spec.mode !== "read" && (
-                            <CatalogForm
-                              key={`${row.id}-${row.version}`}
-                              kind={kind}
-                              record={row}
-                            />
-                          )}
-                        </div>
-                      </details>
+                      <CatalogRecordActions key={`${row.id}-${row.version}`} kind={kind} record={row} />
                     </td>
                   </tr>
                 ))}

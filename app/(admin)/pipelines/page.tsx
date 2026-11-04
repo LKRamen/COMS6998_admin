@@ -1,3 +1,4 @@
+import PipelineGuide from "../../components/pipeline-guide";
 import Link from "next/link";
 import { requireAdmin } from "../../../lib/auth";
 import type { PipelineDraft } from "../../../lib/pipelines";
@@ -15,6 +16,7 @@ export default async function PipelinesPage() {
       <PageHeading eyebrow="PROMPT DEVELOPMENT" title="Pipeline studio" description="Create a draft, test it on an image, then publish it for one caption style. You decide when changes go live.">
         <Link className="button primary" href="/pipelines/new">Create pipeline</Link>
       </PageHeading>
+      <PipelineGuide kind="pipelines" />
       <div className="pipeline-impact pipeline-list-intro"><strong>One live pipeline per style.</strong> Publishing replaces that style’s active pipeline. Draft edits never change a published snapshot. Styles without a published pipeline use Quip’s built-in prompts.</div>
       {rows.length ? <div className="pipeline-card-grid">{rows.map((draft) => {
         const ownRelease = draft.active_release?.pipeline_id === draft.id;

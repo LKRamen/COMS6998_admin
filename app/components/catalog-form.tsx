@@ -19,22 +19,17 @@ export default function CatalogForm({
     event.preventDefault();
     const form = event.currentTarget,
       fd = new FormData(form);
-    const action =
-      (event.nativeEvent as SubmitEvent).submitter?.getAttribute("value") ??
-      (record ? "update" : "create");
-    const data =
-      action === "delete"
-        ? {}
-        : Object.fromEntries(
-            spec.fields.map((f) => [
-              f.key,
-              f.type === "checkbox"
-                ? fd.has(f.key)
-                : f.type === "number"
-                  ? Number(fd.get(f.key))
-                  : String(fd.get(f.key) ?? ""),
-            ]),
-          );
+    const action = record ? "update" : "create";
+    const data = Object.fromEntries(
+      spec.fields.map((f) => [
+        f.key,
+        f.type === "checkbox"
+          ? fd.has(f.key)
+          : f.type === "number"
+            ? Number(fd.get(f.key))
+            : String(fd.get(f.key) ?? ""),
+      ]),
+    );
     setBusy(true);
     setError("");
     setSuccess("");
@@ -47,13 +42,12 @@ export default function CatalogForm({
           data,
           id: record?.id,
           version: record?.version,
-          confirm: fd.get("confirm"),
         }),
       });
       const result = await response.json();
       if (!response.ok)
         throw new Error(result.error ?? "The change could not be saved.");
-      setSuccess(action === "delete" ? "Record deleted." : spec.savedMessage ?? "Changes saved.");
+      setSuccess(spec.savedMessage ?? "Changes saved.");
       if (!record) form.reset();
       router.refresh();
     } catch (e) {
@@ -83,7 +77,7 @@ export default function CatalogForm({
                 id={`${uid}-${f.key}`}
                 aria-describedby={f.hint ? `${uid}-${f.key}-hint` : undefined}
                 name={f.key}
-                rows={5}
+                rows={3}
                 required={!f.optional}
                 maxLength={f.max}
                 defaultValue={String(record?.[f.key] ?? "")}
@@ -120,29 +114,6 @@ export default function CatalogForm({
         >
           {busy ? "Saving…" : spec.saveAction ?? (record ? "Save changes" : "Create record")}
         </button>
-        {record && spec.mode === "crud" && (
-          <details className="catalog-delete">
-            <summary>Delete this record</summary>
-            <p>This permanently deletes the record. Type DELETE to confirm.</p>
-            <label htmlFor={`${uid}-confirm`}>
-              Confirmation
-              <input
-                id={`${uid}-confirm`}
-                name="confirm"
-                autoComplete="off"
-                placeholder="DELETE"
-              />
-            </label>
-            <button
-              className="button danger"
-              type="submit"
-              value="delete"
-              formNoValidate
-            >
-              Delete record
-            </button>
-          </details>
-        )}
       </fieldset>
       {error && (
         <p className="error-box" role="alert">

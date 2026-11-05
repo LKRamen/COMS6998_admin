@@ -33,7 +33,7 @@ it("pages the ledger and resets filters when switching record types", () => {
   render(<SampleWorkspace />);
   fireEvent.click(screen.getByRole("tab", { name: /Votes/ }));
   const firstCaption = within(screen.getByRole("tabpanel")).getAllByRole("row")[1].textContent;
-  fireEvent.click(screen.getByRole("button", { name: "Next", exact: true }));
+  fireEvent.click(screen.getByRole("button", { name: "Next" }));
   expect(within(screen.getByRole("tabpanel")).getAllByRole("row")[1].textContent).not.toBe(firstCaption);
   fireEvent.change(screen.getByLabelText("Search votes"), { target: { value: "no-match-987" } });
   expect(screen.getByText("No sample records match.")).toBeTruthy();

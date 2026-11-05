@@ -43,4 +43,4 @@ The assignment requires commit-specific URLs for both the original media/rating 
 
 ## Assignment data
 
-The overview and management screens read Supabase directly. Assignment dummy records belong in the existing database tables, with fictional identities and explicit seed provenance; there is no separate sample workspace. Seed generation records must identify themselves as synthetic, not real AI-provider responses. Existing user records and authorization remain unchanged.
+The overview and management screens read Supabase directly. Assignment dummy records belong in the existing database tables, with fictional identities and explicit seed provenance; there is no separate sample workspace. Keep all dummy media as private drafts so it populates admin statistics without appearing in public feeds, Explore, or public profiles. Seed generation records must identify themselves as synthetic, not real AI-provider responses. Existing user records and authorization remain unchanged.

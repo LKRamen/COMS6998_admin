@@ -46,8 +46,7 @@ begin
    end loop;
    update public.moments set selected_caption_id=caption_id,rendered_path=owner_id||'/'||seed_tag||'/render-'||i||'.jpg',
      public_style=style,author_name='Dummy Student '||lpad(((i%18)+1)::text,2,'0'),
-     status=case when i<20 then 'published' else 'draft' end,
-     published_at=case when i<20 then media_time end where id=media_id;
+     status='draft',published_at=null where id=media_id;
    insert into public.generation_requests(creator_id,moment_id,request_key,quota_date,state,lease_expires_at,
      photo_revision,photo_path,context,style,system_prompt,user_prompt,model,settings,run_id,created_at)
    select owner_id,media_id,run_id,media_time::date,'succeeded',media_time+interval '5 minutes',

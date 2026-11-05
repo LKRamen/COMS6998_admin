@@ -21,3 +21,14 @@ it("fails closed when the admin origin is missing", async () => {
  await expect(login()).rejects.toThrow("redirect:/login?error=config");
  expect(oauth).not.toHaveBeenCalled();
 });
+it("keeps login and its verifier on the current immutable deployment", async () => {
+ vi.stubEnv("VERCEL_URL", "admin-commit-team.vercel.app");
+ headerOrigin.mockReturnValue("https://admin-commit-team.vercel.app");
+ await expect(login()).rejects.toThrow("redirect:https://accounts.google.com/test");
+ expect(oauth).toHaveBeenCalledWith({ provider: "google", options: { redirectTo: "https://admin-commit-team.vercel.app/auth/callback", queryParams: { prompt: "select_account" } } });
+});
+it("does not create a verifier without a request origin", async () => {
+ headerOrigin.mockReturnValue(null);
+ await expect(login()).rejects.toThrow(`redirect:${adminOrigin}/login`);
+ expect(oauth).not.toHaveBeenCalled();
+});

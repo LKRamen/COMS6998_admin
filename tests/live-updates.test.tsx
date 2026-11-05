@@ -55,12 +55,3 @@ it('defers background refreshes until the tab is visible', async () => {
   await act(async () => { document.dispatchEvent(new Event('visibilitychange')); });
   expect(mocks.refresh).toHaveBeenCalledTimes(1); visibility.mockRestore();
 });
-
-it('does not subscribe to live updates or imply live data in the sample workspace', () => {
-  mocks.path='/samples';
-  const view = render(<LiveUpdates initialRevision="1" />);
-  expect(screen.queryByRole('status')).toBeNull();
-  expect(vi.getTimerCount()).toBe(0);
-  view.unmount();
-  expect(mocks.remove).not.toHaveBeenCalled();
-});

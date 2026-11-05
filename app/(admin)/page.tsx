@@ -12,7 +12,7 @@ export default async function OverviewPage() {
         title="The bright side of oversight."
         description="The pulse of your community, from first draft to final reaction."
       >
-        <div className="overview-actions"><Link className="button" href="/samples">Explore sample data</Link>
+        <div className="overview-actions">
         <Link className="button primary" href="/media/new">
           ＋ Create media
         </Link></div>
@@ -24,7 +24,7 @@ export default async function OverviewPage() {
       </div>
       <section className="stats" aria-label="Community statistics">
         {[
-          ["Community", d.profiles, "Google-connected profiles", "♙", "/users"],
+          ["Community", d.profiles, "Registered profiles", "♙", "/users"],
           [
             "Media library",
             d.media,

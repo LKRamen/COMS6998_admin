@@ -41,6 +41,6 @@ Deploy only this repository to `coms6998-admin`, using the six variables in `.en
 The assignment requires commit-specific URLs for both the original media/rating app and this admin app. The overview omits the unused-media spotlight following supervisor feedback.
 
 
-## Sample workspace
+## Assignment data
 
-`/samples` is a read-only, superadmin-protected workspace with a deterministic fictional dataset inspired by the relationships in the Too Soon teaching schema. It provides linked profiles, media, votes, and generation runs, with search, filters, and detail views. The sample period is October 23–November 5, 2026; these are illustrative records, not real users, live analytics, or AI-provider responses. No sample records are written to Supabase or shown in the public Quip feed. The live overview and existing management screens continue to use the real database.
+The overview and management screens read Supabase directly. Assignment dummy records belong in the existing database tables, with fictional identities and explicit seed provenance; there is no separate sample workspace. Seed generation records must identify themselves as synthetic, not real AI-provider responses. Existing user records and authorization remain unchanged.

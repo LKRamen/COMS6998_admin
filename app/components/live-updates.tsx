@@ -19,7 +19,6 @@ export default function LiveUpdates({ initialRevision }: { initialRevision: stri
   const mode = liveMode(path);
 
   useEffect(() => {
-    if (path === "/samples") return;
     const client = createBrowserClient(process.env.NEXT_PUBLIC_SUPABASE_URL!, process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY!);
     let disposed = false, checking = false, timer: ReturnType<typeof setTimeout> | undefined;
     let dirty = false;
@@ -82,7 +81,6 @@ export default function LiveUpdates({ initialRevision }: { initialRevision: stri
     };
   }, [path, router]);
 
-  if (path === "/samples") return null;
   return <div className="live-updates" role="status" aria-live="polite">
     <span>{changed ? "New updates available" : refreshing ? "Updating…" : status}</span>
     {changed && mode !== "editing" && <button type="button" disabled={refreshing} onClick={() => {

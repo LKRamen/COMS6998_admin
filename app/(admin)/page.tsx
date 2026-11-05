@@ -12,9 +12,10 @@ export default async function OverviewPage() {
         title="The bright side of oversight."
         description="The pulse of your community, from first draft to final reaction."
       >
+        <div className="overview-actions"><Link className="button" href="/samples">Explore sample data</Link>
         <Link className="button primary" href="/media/new">
           ＋ Create media
-        </Link>
+        </Link></div>
       </PageHeading>
       <div className="overview-note">
         <span className="live-dot" /> Live database snapshot <span>·</span>{" "}
@@ -62,7 +63,7 @@ export default async function OverviewPage() {
           </Link>
         ))}
       </section>
-      <div className="dashboard-grid">
+      <div className="dashboard-activity">
         <section className="panel activity-panel">
           <div className="panel-title">
             <div>
@@ -116,28 +117,7 @@ export default async function OverviewPage() {
             <b>{d.generations} AI generation runs, all time</b>
           </div>
         </section>
-        <section className="spotlight">
-          <span className="eyebrow">WAITING FOR A VERDICT</span>
-          <div className="spotlight-number">
-            {d.unrated}
-            <Link href="/media?status=published&reactions=unrated" className="spotlight-arrow" aria-label="Open the media library to review memes without a reaction">
-              <span aria-hidden="true">↗</span>
-            </Link>
-          </div>
-          <h2>
-            Memes without
-            <br />a reaction.
-          </h2>
-          <p>
-            {d.published
-              ? `${Math.round((d.unrated / d.published) * 100)}% of published media hasn’t been rated yet. A fresh audience could change that.`
-              : "Publish your first meme to get the conversation started."}
-          </p>
-          <Link href="/media">
-            See the media library <span>→</span>
-          </Link>
-          <div className="spotlight-ring" aria-hidden="true" />
-        </section>
+
       </div>
       <div className="dashboard-grid lower">
         <section className="panel">

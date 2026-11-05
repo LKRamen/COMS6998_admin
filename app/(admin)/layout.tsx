@@ -59,7 +59,7 @@ export default async function AdminLayout({
         </div>
         <main className="main-content"><LiveUpdates initialRevision={String(signal?.revision ?? 0)} />{children}</main>
         <footer>
-          Quip Control <span>Real data. Human judgment.</span>
+          Quip Control <span>Human judgment. Clear oversight.</span>
         </footer>
       </div>
     </div>

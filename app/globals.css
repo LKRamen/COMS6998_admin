@@ -361,6 +361,8 @@ nav i {
   padding: 25px;
   min-width: 0;
 }
+.overview-actions { display: flex; flex-wrap: wrap; gap: 10px; }
+.dashboard-activity { margin-bottom: 24px; }
 .dashboard-grid {
   display: grid;
   grid-template-columns: minmax(0, 1.9fr) minmax(260px, 1fr);

@@ -5,6 +5,7 @@ import { catalogs } from "../../lib/catalog";
 import { isPipelineCatalog, isPipelinePath } from "../../lib/pipeline-navigation";
 const links = [
   ["/", "Overview", "◫"],
+  ["/samples", "Sample workspace", "◈"],
   ["/media", "Media library", "▧"],
   ["/users", "Community", "♙"],
   ["/ratings", "Vote ledger", "↕"],

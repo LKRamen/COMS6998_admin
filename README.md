@@ -23,7 +23,7 @@ To grant another admin, first verify the intended Google identity, then update i
 
 ## Development
 
-Use Node.js 24, `npm ci`, and copy `.env.example` to `.env.local` with the existing project credentials. Run `npm run dev`. Set `APP_ORIGIN` to the origin registered in Supabase's OAuth redirect allow list. Google login from immutable Vercel URLs starts on the stable registered admin origin so PKCE cookies remain on the correct host.
+Use Node.js 24, `npm ci`, and copy `.env.example` to `.env.local` with the existing project credentials. Run `npm run dev`. Set `APP_ORIGIN` to the origin registered in Supabase's OAuth redirect allow list. Google login accepts the configured stable origin and the exact current VERCEL_URL. Register each submitted deployment’s /auth/callback in Supabase; its PKCE cookie and callback stay on that same host.
 
 ```
 npm test
@@ -38,4 +38,9 @@ The database test creates a disposable PGlite database using snapshots of the or
 
 Deploy only this repository to `coms6998-admin`, using the six variables in `.env.example`. Keep `SUPABASE_SERVICE_ROLE_KEY` and `GEMINI_API_KEY` private. Add the stable admin `/auth/callback` to Supabase's redirect allow list without replacing the original app's Site URL. Vercel deployment protection is disabled for incognito access; the application login and database authorization stay enforced.
 
-The assignment requires commit-specific URLs for both the original media/rating app and this admin app. Previous-week feedback was not supplied, so no claim is made that specific unseen feedback was implemented.
+The assignment requires commit-specific URLs for both the original media/rating app and this admin app. The overview omits the unused-media spotlight following supervisor feedback.
+
+
+## Sample workspace
+
+`/samples` is a read-only, superadmin-protected workspace with a deterministic fictional dataset inspired by the relationships in the Too Soon teaching schema. It provides linked profiles, media, votes, and generation runs, with search, filters, and detail views. The sample period is October 23–November 5, 2026; these are illustrative records, not real users, live analytics, or AI-provider responses. No sample records are written to Supabase or shown in the public Quip feed. The live overview and existing management screens continue to use the real database.
